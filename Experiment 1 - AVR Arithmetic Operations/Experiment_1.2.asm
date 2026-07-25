@@ -1,0 +1,35 @@
+.CSEG
+LDI ZL,LOW(NUM<<1)
+LDI ZH,HIGH(NUM<<1)
+LDI XL,0x62
+LDI XH,0x00
+LDI R16, 0x00
+LDI R17, 0x00
+LDI R18, 0x01
+
+LPM R0,Z+
+LPM R1,Z+
+LPM R2,Z+
+LPM R3,Z
+
+ADD R1,R3
+BRCC no_carry_1
+LDI R16,0x01
+no_carry_1: 
+ST X, R1
+
+ADD R0, R16
+BRCC no_carry_2
+LDI R17,0x01
+no_carry_2: 
+
+ADD R0, R2
+BRCC no_carry_3
+ADD R17, R18
+no_carry_3:
+ST -X, R0
+
+ST -X, R17 
+
+NOP
+NUM: .db 0x1A, 0x3F, 0x0B, 0x25
